@@ -3,8 +3,6 @@
 
 ![](_breathe.gif)
 
----
-
 Demonstration of an oscilator function that may take a frequency in Hz or in form of an `oscil` object itself.
 
 That is, rather than being added to each other, the frequencies modulate one another.
