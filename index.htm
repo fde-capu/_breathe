@@ -1,0 +1,107 @@
+<!--<textarea id="debug" cols="150" rows="1" style=""></textarea>-->
+<center>
+<canvas id="myCanvas" width=500 height=400 style="border:1px solid #000000;float:center;" onmousedown="mousedown(event);" onmouseup="mouseup();">
+</canvas>
+<script>
+
+
+var led = 13;
+//var bri;
+var canvas = document.getElementById('myCanvas');
+var context = canvas.getContext('2d');
+
+window.requestAnimFrame = (function(callback) {
+	return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+	function(callback) {
+		window.setTimeout(callback, 1000/60);
+	};
+})();
+
+
+var i = 0;
+var walkinc=3;
+var amp=250;
+var change=180;
+var phacum = [];
+var lastime = [];
+function animate() {
+	//canvas.width = canvas.width;
+	
+	freq=oscil(0.5,2,1/10,0);
+	//puttxt(freq, 202, 220);
+	
+	bri=oscil(0,255,freq,1);
+	//puttxt(bri, 202, 230);
+	analogWrite(13, bri);
+	
+	requestAnimFrame(function() {
+	  animate();
+	});
+	
+}; animate();
+
+function oscil(min,max,Hz,id){
+	
+	var d = new Date();
+	var n = d.getTime();
+	if(!lastime[id]){lastime[id]=n/1000;}
+	if(!phacum[id]){phacum[id]=0;}
+	
+	sample = Math.sin(2*Math.PI*phacum[id]);
+	
+	t = n / 1000;
+	//phacum[id] += Math.sin(Hz*2*Math.PI*t) * (n-lastime[id]);
+	phacum[id] += Hz * (t - lastime[id]);
+	lastime[id]=t;
+	
+	sample=sample*((max-min)/2)+((max-min)/2)+min; 
+
+	oout = sample;
+	return oout;
+}
+
+
+
+var walk=0;
+var lastx=0;
+var lasty=0;
+
+function analogWrite(pin,light) {
+	makecircle(pin*19.2,200,light);
+	
+	//makecircle(walk,100*light/255,"");
+	
+	context.beginPath();
+	context.moveTo(lastx, lasty);
+        lastx=walk;lasty=amp*light/255+50;
+	context.lineTo(lastx, lasty);
+        context.stroke();
+	
+	walk+=walkinc;
+	if (walk>500) {walk=0;canvas.width = canvas.width;lastx=0;}
+
+	
+	point=light;
+	puttxt(point, 262, 205);
+}
+
+
+function makecircle(x, y, b){
+	context.beginPath();
+	context.arc(x, y, 5, 0, 2 * Math.PI, false);
+	b=Math.ceil(b);
+	context.fillStyle = "rgb("+b+","+b+","+b+")";
+	context.fill();
+}
+
+function out(str){
+	document.getElementById("debug").value=str;
+}
+
+function puttxt(str,x,y){
+	//context.fillStyle = "#000000";
+	//context.font="11px Georgia";
+	//context.fillText(str,x,y);
+}
+
+</script>
