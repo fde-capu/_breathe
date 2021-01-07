@@ -1,6 +1,8 @@
 ### _breathe
 ##### small study on sine wave glissados
 
+![](_breathe.gif)
+
 ---
 
 Demonstration of an oscilator function that may take a frequency in Hz or in form of an `oscil` object itself.
