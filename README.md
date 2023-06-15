@@ -2,6 +2,7 @@
 ##### small study on sine wave glissados
 
 ![](_breathe.gif)
+
 [Demo](https://fde-capu.github.io/_breathe)
 
 Demonstration of an oscilator function that may take a frequency in Hz or in form of an `oscil` object itself.
